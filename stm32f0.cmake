@@ -52,5 +52,5 @@ set(LDFLAGS_2
 
 set(OPENOCD_CFG "board/st_nucleo_f0.cfg")
 
-include(arm-toolchain.cmake)
-include(stm32.cmake)
+include(arm-toolchain)
+include(stm32)
