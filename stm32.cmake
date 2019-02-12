@@ -59,7 +59,7 @@ FUNCTION(STM32_FLASH_TARGET TARGET)
         endif()
         set(FILE ${CMAKE_BINARY_DIR}/${TARGET})
         #        message(STATUS ${FILE}.hex)
-        set(FLASH_CMD -c "reset_config ${OPENOCD_RESET_CFG}" -c "program \"${FILE}.hex\" verify" )
+        set(FLASH_CMD "-c \"reset_config ${OPENOCD_RESET_CFG}\" -c \"program \"${FILE}.hex\" verify\"" )
         message(STATUS "FLASH CMD: ${FLASH_CMD}")
         if (HLA_SERIAL)
             set(FLASH_CMD -c "hla_serial ${HLA_SERIAL}"
