@@ -8,6 +8,13 @@
 
 set(STM32_FAMILY "f0")
 
+if (NOT DEFINED OPTIMIZATION)
+    set(OPTIMIZATION -Os)
+endif()
+
+if (NOT DEFINED DEBUG_LEVEL)
+    set(DEBUG_LEVEL -g3)
+endif()
 
 
 set(CFLAGS_1
@@ -20,8 +27,8 @@ set(CFLAGS_1
         )
 
 set(CFLAGS_2
-        -Og
-        -g3
+        ${OPTIMIZATION}
+        ${DEBUG_LEVEL}
         -pedantic
         -Wall
         -Werror
@@ -30,6 +37,7 @@ set(CFLAGS_2
         -c
         -fmessage-length=0
         )
+
 set(ASMFLAGS
         -mcpu=cortex-m0
         -mthumb
@@ -47,7 +55,7 @@ set(LDFLAGS_1
         )
 
 set(LDFLAGS_2
-        -Wl,-Map=output.map -Wl,--gc-sections
+        -Wl,-Map=output.map -Wl,--gc-sections -Wl,--cref
         )
 
 set(OPENOCD_CFG "board/st_nucleo_f0.cfg")

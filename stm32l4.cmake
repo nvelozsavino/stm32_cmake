@@ -8,6 +8,13 @@
 
 set(STM32_FAMILY "l4")
 
+if (NOT DEFINED OPTIMIZATION)
+    set(OPTIMIZATION -Os)
+endif()
+
+if (NOT DEFINED DEBUG_LEVEL)
+    set(DEBUG_LEVEL -g3)
+endif()
 
 
 set(CFLAGS_1
@@ -20,8 +27,8 @@ set(CFLAGS_1
         )
 
 set(CFLAGS_2
-        -Og
-        -g3
+        ${OPTIMIZATION}
+        ${DEBUG_LEVEL}
         -pedantic
         -Wall
         -Werror
