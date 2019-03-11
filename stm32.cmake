@@ -63,11 +63,19 @@ FUNCTION(STM32_FLASH_TARGET TARGET)
         set(FILE ${CMAKE_BINARY_DIR}/${TARGET})
         #        message(STATUS ${FILE}.hex)
         GET_FILENAME_COMPONENT(FILE_PATH "${FILE}" ABSOLUTE)
-        set(FLASH_CMD -c "reset_config ${OPENOCD_RESET_CFG}" -c "program \"${FILE_PATH}.hex\" verify" )
+        if (WIN32 OR WIN64)
+            set(FLASH_CMD "-c \"reset_config ${OPENOCD_RESET_CFG}\" -c \"program \"${FILE_PATH}.hex\" verify\"" )
+        else()
+            set(FLASH_CMD -c "reset_config ${OPENOCD_RESET_CFG}" -c "program \"${FILE_PATH}.hex\" verify" )
+        endif()
         message(STATUS "FLASH CMD: ${FLASH_CMD}")
         if (HLA_SERIAL)
-            set(FLASH_CMD -c "hla_serial ${HLA_SERIAL}"
+            if (WIN32 OR WIN64)
+                set(FLASH_CMD "-c \"hla_serial ${HLA_SERIAL}\" ${FLASH_CMD}")
+            else()
+                set(FLASH_CMD -c "hla_serial ${HLA_SERIAL}"
                     ${FLASH_CMD})
+            endif()
         endif()
 
         if (OPENOCD_SCRIPT)
@@ -79,7 +87,7 @@ FUNCTION(STM32_FLASH_TARGET TARGET)
         if (WIN32)
             string(REPLACE ";" "<->" L2 "${OPENOCD_CMD}")
         endif()
-
+        message(STATUS "FLASH CMD: ${FLASH_CMD}")
         add_custom_target(Flash
                 DEPENDS ${TARGET}
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_PATH}
