@@ -37,11 +37,11 @@ FUNCTION(STM32_PRINT_SIZE_OF_TARGETS TARGET)
 ENDFUNCTION()
 
 
-function(BUILD_UPG NAME BINARY_FILE OUTPUT_FILE PID VERSION MIN_VERSION)
+function(BUILD_UPG TARGET NAME BINARY_FILE OUTPUT_FILE PID VERSION MIN_VERSION)
     find_program(BIN2UPG bin2upg)
     if(BIN2UPG)
         add_custom_target(${NAME}
-                DEPENDS ${TARGET}
+                DEPENDS ${TARGET} ${BINARY_FILE}
                 COMMAND ${BIN2UPG} -b ${BINARY_FILE} -o ${OUTPUT_FILE} -p ${PID} -f ${VERSION} -m ${MIN_VERSION}
                 )
     endif()
