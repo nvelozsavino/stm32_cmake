@@ -21,7 +21,8 @@ set(CFLAGS_1
         -mcpu=cortex-m4
         -mthumb
         -mfloat-abi=hard
-        -std=c99
+        -mfpu=fpv4-sp-d16
+#        -std=c99
         -D__weak=__attribute__\(\(weak\)\)
         -D__packed=__attribute__\(\(__packed__\)\)
         )
@@ -29,7 +30,7 @@ set(CFLAGS_1
 set(CFLAGS_2
         ${OPTIMIZATION}
         ${DEBUG_LEVEL}
-        -pedantic
+#        -pedantic
         -Wall
         -Werror
         -fmessage-length=0
@@ -41,6 +42,7 @@ set(ASMFLAGS
         -mcpu=cortex-m4
         -mthumb
         -mfloat-abi=hard
+        -mfpu=fpv4-sp-d16
         -g
         )
 set(CXXFLAGS "")
