@@ -20,9 +20,10 @@ set(CFLAGS_1
         #        -mthumb
 #        -mfloat-abi=hard
         )
-
 set(CFLAGS_2
-        -c
+        -c)
+
+set(CFLAGS_3
         ${OPTIMIZATION}
 
         -ffunction-sections
@@ -44,25 +45,34 @@ set(ASMFLAGS
         -mcpu=cortex-m4
         ${DEBUG_LEVEL}
         -c
-        -mthumb
+        -x assembler-with-cpp
+        --specs=nano.specs
+        -mfpu=fpv4-sp-d16
         -mfloat-abi=hard
-        -g3
+        -mthumb
         )
 
 set(CXXFLAGS "")
 
 set(LDFLAGS_1
         -mcpu=cortex-m4
-        -mthumb
-        -mfloat-abi=hard
-        -specs=nosys.specs
+
         #        -specs=nano.specs
-        -mfpu=fpv4-sp-d16
         )
 
 
 set(LDFLAGS_2
-        -Wl,-Map=output.map -Wl,--gc-sections
+        -specs=nosys.specs
+
+        -Wl,-Map=output.map
+        -Wl,--gc-sections
+        -static
+        -specs=nano.specs
+        -mfpu=fpv4-sp-d16
+        -mfloat-abi=hard
+        -mthumb
+        -Wl,--start-group -lc -lm -Wl,--end-group
+
         )
 
 
