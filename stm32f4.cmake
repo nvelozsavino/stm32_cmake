@@ -79,8 +79,9 @@ set(LDFLAGS_2
 
         )
 
-
+if (NOT OPENOCD_CFG)
 set(OPENOCD_CFG "board/st_nucleo_f4.cfg")
-
+endif()
+message(STATUS "Using OpenOCD cfg: ${OPENOCD_CFG}")
 include(arm-toolchain)
 include(stm32)
