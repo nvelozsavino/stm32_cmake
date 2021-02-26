@@ -25,6 +25,9 @@ FUNCTION(STM32_ADD_HEX_BIN_TARGETS TARGET OUTPUT)
     add_custom_command(TARGET ${TARGET} POST_BUILD COMMAND ${CMAKE_OBJCOPY} -Oihex ${TARGET} ${OUTPUT}.hex)
     add_custom_command(TARGET ${TARGET} POST_BUILD COMMAND ${CMAKE_OBJCOPY} -Oihex ${TARGET} ${TARGET}.hex)
     add_custom_command(TARGET ${TARGET} POST_BUILD COMMAND ${CMAKE_OBJCOPY} -Obinary ${TARGET} ${OUTPUT}.bin)
+
+
+
 ENDFUNCTION()
 
 FUNCTION(STM32_PRINT_SIZE_OF_TARGETS TARGET)
@@ -37,12 +40,13 @@ FUNCTION(STM32_PRINT_SIZE_OF_TARGETS TARGET)
 ENDFUNCTION()
 
 
-function(BUILD_UPG TARGET NAME BINARY_FILE OUTPUT_FILE PID VERSION MIN_VERSION)
+function(BUILD_UPG TARGET NAME BINARY_FILE OUTPUT_FILE PID VERSION MIN_VERSION DATA_OFFSET)
     find_program(BIN2UPG bin2upg)
     if(BIN2UPG)
+        set(BIN2UPG_COMMAND ${BIN2UPG} -b ${BINARY_FILE} -o ${OUTPUT_FILE} -p ${PID} -f ${VERSION} -m ${MIN_VERSION} -d ${DATA_OFFSET})
         add_custom_target(${NAME}
                 DEPENDS ${TARGET} ${BINARY_FILE}
-                COMMAND ${BIN2UPG} -b ${BINARY_FILE} -o ${OUTPUT_FILE} -p ${PID} -f ${VERSION} -m ${MIN_VERSION}
+                COMMAND ${BIN2UPG_COMMAND}
                 )
     endif()
 endfunction()
@@ -69,6 +73,7 @@ FUNCTION(STM32_FLASH_TARGET TARGET)
             set(FLASH_CMD -c "reset_config ${OPENOCD_RESET_CFG}" -c "program \"${FILE_PATH}.hex\" verify" )
         endif()
         message(STATUS "FLASH CMD: ${FLASH_CMD}")
+        set(HLA_SERIAL "" CACHE STRING "HLA Serial")
         if (HLA_SERIAL)
             if (WIN32 OR WIN64)
                 set(FLASH_CMD "-c \"hla_serial ${HLA_SERIAL}\" ${FLASH_CMD}")
